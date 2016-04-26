@@ -52,7 +52,6 @@ var server = net.createServer(function (socket) {
         
       default:
         console.log('Received unknown data: ' + data);
-        socket.end();
         break;
     }
   }));
