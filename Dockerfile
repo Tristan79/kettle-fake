@@ -4,6 +4,6 @@ RUN mkdir -p /usr/src/kettle-fake
 WORKDIR /usr/src/kettle-fake
 COPY . /usr/src/kettle-fake
 
-EXPOSE 8080
+EXPOSE 2000
 CMD [ "npm", "start" ]
 
