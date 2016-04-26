@@ -19,7 +19,7 @@ var server = net.createServer(function (socket) {
         receivedHello = true;
         
         console.log('Sending HELLOAPP');
-        socket.write('HELLOAPP\n');
+        socket.write('HELLOAPP\r');
         break;
         
       case "set sys output 0x4":
@@ -32,9 +32,9 @@ var server = net.createServer(function (socket) {
         }
         
         console.log('Sending boiling status 0x5');
-        socket.write("sys status 0x5\n");
+        socket.write("sys status 0x5\r");
         console.log('Sending temperature 100 status 0x100');
-        socket.write("sys status 0x100\n");
+        socket.write("sys status 0x100\r");
         break;
         
       case "set sys output 0x0":
@@ -47,7 +47,7 @@ var server = net.createServer(function (socket) {
         }
         
         console.log('Sending off status 0x0');
-        socket.write("sys status 0x0\n");
+        socket.write("sys status 0x0\r");
         break;
         
       default:
