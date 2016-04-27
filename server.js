@@ -82,5 +82,6 @@ var server = net.createServer(function (socket) {
   }
 });
 
-server.listen(2000);
-console.log('Listening on port 2000');
+var port = process.env['KETTLEPORT'] || 2000;
+server.listen(port);
+console.log('Listening on port ' + port);
