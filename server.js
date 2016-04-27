@@ -37,6 +37,19 @@ var server = net.createServer(function (socket) {
         socket.write("sys status 0x100\r");
         break;
         
+      case "set sys output 0x8":
+        console.log('Received keep warm request');
+
+        if (!receivedHello) {
+          console.log('No HELLOKETTLE received.  Closing.');
+          socket.end();
+          return;
+        }
+        
+        console.log('Sending keep warm true status 0x11');
+        socket.write("sys status 0x11\r");
+        break;
+        
       case "set sys output 0x0":
         console.log('Received off request');
         
