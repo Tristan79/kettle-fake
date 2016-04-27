@@ -11,8 +11,7 @@ var server = net.createServer(function (socket) {
         console.log('Received HELLOKETTLE');
 
         if (receivedHello) {
-          console.log('Already received HELLOKETTLE. Closing.');
-          socket.end();
+          console.log('WARNING: received duplicate HELLOKETTLE.');
           return;
         }
         
@@ -26,8 +25,7 @@ var server = net.createServer(function (socket) {
         console.log('Received boil request');
 
         if (!receivedHello) {
-          console.log('No HELLOKETTLE received.  Closing.');
-          socket.end();
+          console.log('WARNING: no HELLOKETTLE received.');
           return;
         }
         
@@ -41,8 +39,7 @@ var server = net.createServer(function (socket) {
         console.log('Received keep warm request');
 
         if (!receivedHello) {
-          console.log('No HELLOKETTLE received.  Closing.');
-          socket.end();
+          console.log('WARNING: no HELLOKETTLE received.');
           return;
         }
         
@@ -54,8 +51,7 @@ var server = net.createServer(function (socket) {
         console.log('Received off request');
         
         if (!receivedHello) {
-          console.log('No HELLOKETTLE received.  Closing.');
-          socket.end();
+          console.log('WARNING: no HELLOKETTLE received.');
           return;
         }
         
