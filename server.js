@@ -47,6 +47,119 @@ var server = net.createServer(function (socket) {
         socket.write("sys status 0x11\r");
         break;
         
+
+      case "get sys status":
+        console.log('Received status');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status key=!\r");
+        break;
+
+
+      case "set sys output 0x200":
+        console.log('Received 65C');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x65\r");
+        break;
+        
+
+
+      case "set sys output 0x4000":
+        console.log('Received 80C');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x80\r");
+        break;
+        
+        
+        
+      case "set sys output 0x2":
+        console.log('Received 95C');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x95\r");
+        break;
+        
+        
+        
+      case "set sys output 0x80":
+        console.log('Received 100C');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x100\r");
+        break;
+        
+        
+
+      case "set sys output 0x8005":
+        console.log('Received Keepwarm 5 minutes');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x8005\r");
+        break;
+        
+        
+    
+        
+      case "set sys output 0x8010":
+        console.log('Received Keepwarm 10 minutes');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x8010\r");
+        break;
+        
+        
+        
+        
+      case "set sys output 0x8020":
+        console.log('Received Keepwarm 20 minutes');
+
+        if (!receivedHello) {
+          console.log('WARNING: no HELLOKETTLE received.');
+          return;
+        }
+        
+        console.log('Sending status !');
+        socket.write("sys status 0x8020\r");
+        break;
+        
+        
       case "set sys output 0x0":
         console.log('Received off request');
         
