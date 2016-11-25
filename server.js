@@ -53,6 +53,7 @@ var server = net.createServer(function (socket) {
         } else {
           console.log('Sending temperature 100 status 0x100');
           socket.write("sys status 0x100\r");
+          t100 = true;
         }
         heating = true;
         break;
