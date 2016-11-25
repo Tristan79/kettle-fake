@@ -2,11 +2,20 @@
 
 var net = require('net');
 
+var heating = false;
+var keepwarm = false;
+var t65 = false;
+var t100 = false;
+var t95 = false;
+var t80 = false
+
 var server = net.createServer(function (socket) {
   var receivedHello = false;
   
   socket.on('data', newLineStream(function (data) {
+
     switch (data) {
+
       case "HELLOKETTLE":
         console.log('Received HELLOKETTLE');
 
@@ -31,8 +40,21 @@ var server = net.createServer(function (socket) {
         
         console.log('Sending boiling status 0x5');
         socket.write("sys status 0x5\r");
-        console.log('Sending temperature 100 status 0x100');
-        socket.write("sys status 0x100\r");
+        
+        if (t65) {
+          console.log('Sending temperature 65 status 0x65');
+          socket.write("sys status 0x65\r");
+        } else if (t80) {
+          console.log('Sending temperature 80 status 0x80');
+          socket.write("sys status 0x80\r");
+        } else if (t95) {
+          console.log('Sending temperature 95 status 0x95');
+          socket.write("sys status 0x95\r");
+        } else {
+          console.log('Sending temperature 100 status 0x100');
+          socket.write("sys status 0x100\r");
+        }
+        heating = true;
         break;
         
       case "set sys output 0x8":
@@ -45,6 +67,7 @@ var server = net.createServer(function (socket) {
         
         console.log('Sending keep warm true status 0x11');
         socket.write("sys status 0x11\r");
+        keepwarm = true;
         break;
         
 
@@ -56,8 +79,18 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
-        socket.write("sys status key=!\r");
+        console.log('Sending status' + (heating?" heating":"") + (keepwarm?" keepwarm":"") + (t65?" temperature 65":"") + (t80?" temperature 80":"")+ (t95?" temperature 95":"") + (t100?" temperature 100":""));
+        var status = 0;
+        
+        if (heating) status += 1;
+        if (keepwarm) status += 2;
+        if (t65) status += 4;
+        if (t80) status += 8;
+        if (t95) status += 16;
+        if (t100) status += 32;
+        
+        if (status == 0) socket.write("sys status key=\r");
+        else socket.write("sys status key=" + String.fromCharCode(status) + "\r");
         break;
 
 
@@ -69,8 +102,12 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status temperature 65');
         socket.write("sys status 0x65\r");
+        t65 = true;
+        t80 = false;
+        t95 = false;
+        t100 = false;
         break;
         
 
@@ -83,8 +120,13 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status temperature 80');
         socket.write("sys status 0x80\r");
+        
+        t65 = false;
+        t80 = true;
+        t95 = false;
+        t100 = false;
         break;
         
         
@@ -97,8 +139,12 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status temperature 95');
         socket.write("sys status 0x95\r");
+        t65 = false;
+        t80 = false;
+        t95 = true;
+        t100 = false;
         break;
         
         
@@ -111,8 +157,12 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status temperature 100');
         socket.write("sys status 0x100\r");
+        t65 = false;
+        t80 = true;
+        t95 = false;
+        t100 = false;
         break;
         
         
@@ -125,8 +175,9 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status keepwarm 5 minutes');
         socket.write("sys status 0x8005\r");
+        keepwarm = true;
         break;
         
         
@@ -140,8 +191,9 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status keepwarm 10 minutes');
         socket.write("sys status 0x8010\r");
+        keepwarm = true;
         break;
         
         
@@ -155,8 +207,9 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending status !');
+        console.log('Sending status keepwarm 20 minutes');
         socket.write("sys status 0x8020\r");
+        keepwarm = true;
         break;
         
         
@@ -168,8 +221,10 @@ var server = net.createServer(function (socket) {
           return;
         }
         
-        console.log('Sending off status 0x0');
+        console.log('Sending off status');
         socket.write("sys status 0x0\r");
+        heating = false;
+        keepwarm = false;
         break;
         
       default:
